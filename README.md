@@ -30,18 +30,21 @@ If using the executable for windows, simply double click to launch it.
 
 #### Windows
 
-- If you installed python using the app-store, replace `python` with `python3` in the next line.
+- If you installed python using the app-store, replace `python` with `python3`.
 
 ```commandline
 python -m pip install --user pipx
+python -m pipx ensurepath
 pipx install canopto
 ```
+
+- You might need to close the current cmd window and open a new one after running `python -m pipx ensure path`
 
 #### Linux
 
 ```commandline
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
+python -m pip install --user pipx
+python -m pipx ensurepath
 pipx install canopto
 ```
 
@@ -63,7 +66,8 @@ TODO
 git clone https://github.com/theresurgence/canopto
 cd canopto
 python -m venv venv
-source venv/bin/activate OR source venv/Scripts/activate
+source venv/bin/activate  # Linux or MacOS
+source venv/Scripts/activate # Windows
 pip install -r requirements.txt
 python src/canopto/
 ```
