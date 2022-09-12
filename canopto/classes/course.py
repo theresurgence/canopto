@@ -5,10 +5,11 @@ import os
 import aiofiles
 from bs4 import BeautifulSoup
 
-from classes.folder import Folder
-from core.config import get_download_dir
-from core.web import ep_folders_in_course, get_json
-from core.web import get_ext_tools_panopto_url, get_request, post_request, create_folder_request_payload, download_file
+from canopto.classes.folder import Folder
+from canopto.core.config import get_download_dir
+from canopto.core.web import ep_folders_in_course, get_json
+from canopto.core.web import get_ext_tools_panopto_url, get_request, post_request, create_folder_request_payload, \
+    download_file
 
 PANOPTO_LTI_URL = 'https://mediaweb.ap.panopto.com/Panopto/LTI/LTI.aspx'
 FOLDER_INFO_URL = 'https://mediaweb.ap.panopto.com/Panopto/Services/Data.svc/GetFolderInfo'

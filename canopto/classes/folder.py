@@ -4,9 +4,9 @@ import os
 
 import aiofiles
 
-from classes.file import File
-from core.config import get_download_dir
-from core.web import ep_files_in_folder, get_json
+from canopto.classes.file import File
+from canopto.core.config import get_download_dir
+from canopto.core.web import ep_files_in_folder, get_json
 
 
 class Folder:
