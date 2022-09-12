@@ -30,8 +30,9 @@ def cli():
     except (KeyboardInterrupt, RuntimeError):
         print("Exited.")
 
-# if __name__ == '__main__':
-#     try:
-#         asyncio.run(main())
-#     except (KeyboardInterrupt, RuntimeError):
-#         print("Exited.")
+
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, RuntimeError):
+        print("Exited.")
