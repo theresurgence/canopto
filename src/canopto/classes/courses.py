@@ -1,8 +1,8 @@
 import asyncio
 
 from classes.course import Course
-from ui.messages import print_list_courses
 from core.web import ep_courses, get_json
+from ui.messages import print_list_courses
 
 
 class Courses:

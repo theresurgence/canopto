@@ -1,8 +1,8 @@
 #!/bin/python3
 import asyncio
 
-from core.authenticate import authentication_loop
 from classes.courses import Courses
+from core.authenticate import authentication_loop
 from core.config import parse_config_file
 from core.menu import select_menu
 from core.web import close_aclient

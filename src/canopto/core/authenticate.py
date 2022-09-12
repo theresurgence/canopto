@@ -4,9 +4,9 @@ import httpx
 import keyring
 from bs4 import BeautifulSoup
 
+from core.web import get_request, post_request
 from ui.messages import print_authentication_error, print_request_error
 from ui.tui import ask_save_credentials_prompt, get_credentials_prompt
-from core.web import get_request, post_request
 
 CANVAS_URL = "https://canvas.nus.edu.sg/login/saml/103"
 USER_IDENTIFIER_URL = "https://nus.vmwareidentity.asia/federation//auth/login/input/useridentifier"
@@ -24,7 +24,6 @@ def get_credentials_from_keyring():
     except keyring.errors.KeyringLocked:
         print("Cannot get saved credentials!")
         return None, None
-
 
 
 def save_credentials_to_keyring(username: str, password: str):
