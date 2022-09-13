@@ -10,7 +10,7 @@ Contributions and suggestions are welcome!
 ## Usage
 
 - Open a terminal window (Linux/MacOS)
-- For windows, open a command prompt (search for cmd in the search bar)
+- For windows, open a command prompt (search for `cmd` in the search bar)
 - Enter the following command
 
 ```commandline
@@ -26,35 +26,28 @@ If using the executable for windows, simply double click to launch it.
 - If you have python3 on your computer, are using an OS that has it by default (MacOS, Linux)
 - pipx is recommended over directly using pip to install canopto, to run it in an isolated environment.
 - For the commands below, use `python3` or `python` if one does not work.
-- Similar, `pip3` or `pip`
+- Similarly, `pip3` or `pip`
+- You can easily upgrade using `pipx upgrade canopto`
 
-#### Windows
-
-- If you installed python using the app-store, replace `python` with `python3`.
+#### Windows and Linux
 
 ```commandline
 python -m pip install --user pipx
 python -m pipx ensurepath
 pipx install canopto
+pipx upgrade canopto 
 ```
 
 - You might need to close the current cmd window and open a new one after running `python -m pipx ensure path`
 
-#### Linux
-
-```commandline
-python -m pip install --user pipx
-python -m pipx ensurepath
-pipx install canopto
-```
-
 #### MacOS
 
-```commandline
-brew install pipx
-pipx ensurepath
-pipx install canopto
-```
+  ```commandline
+  brew install pipx
+  pipx ensurepath
+  pipx install canopto
+  pipx upgrade canopto
+  ```
 
 ### Download from executable
 
