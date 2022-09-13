@@ -7,9 +7,9 @@ from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit.shortcuts import create_confirm_session
 from prompt_toolkit.validation import Validator, ValidationError
 
-from canopto.classes.menuoption import MenuOption
-from canopto.core.config import is_download_dir_valid
-from canopto.ui.messages import print_folder_notification
+from classes.menuoption import MenuOption
+from core.config import is_download_dir_valid
+from ui.messages import print_folder_notification
 
 
 class BlankValidatorNoMessage(Validator):

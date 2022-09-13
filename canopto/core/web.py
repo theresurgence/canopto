@@ -19,7 +19,7 @@ BROWSER_HEADER = {
     'TE': 'trailers'
 }
 
-LIMITS = httpx.Limits(max_keepalive_connections=5, max_connections=10)
+LIMITS = httpx.Limits(max_keepalive_connections=10, max_connections=10)
 ACLIENT = httpx.AsyncClient(http1=False, http2=True,
                             limits=LIMITS,
                             headers=BROWSER_HEADER, timeout=3)

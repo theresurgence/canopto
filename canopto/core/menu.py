@@ -5,13 +5,14 @@ import time
 
 import httpx
 
-from canopto.classes.menuoption import MenuOption
-from canopto.core.config import select_download_dir_dialog
-from canopto.ui.messages import print_download_time, print_request_error, print_faq
-from canopto.ui.tui import select_option_prompt
+from classes.menuoption import MenuOption
+from core.config import select_download_dir_dialog
+from ui.messages import print_download_time, print_request_error, print_faq
+from ui.tui import select_option_prompt
 
 
 async def download_files(courses):
+    logging.info("Downloading files....")
     start = time.perf_counter()
     await courses.download_files()
     end = time.perf_counter() - start
@@ -20,10 +21,11 @@ async def download_files(courses):
 
 
 async def download_videos(courses):
+    logging.info("Downloading videos....")
     start = time.perf_counter()
-    for course in courses.courses:
-        await course.get_videos()
-    await course.download_videos()
+    await courses.refresh_videos_list()
+    await courses.download_videos()
+
     end = time.perf_counter() - start
     time_taken = f'{end:0.2f}'
     print_download_time("videos", time_taken)
@@ -50,6 +52,7 @@ async def select_menu(courses):
 
     while True:
         option = await select_option_prompt(courses)
+        logging.info(f"Option selected: {option}")
         clear_screen()
 
         try:

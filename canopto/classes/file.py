@@ -1,8 +1,8 @@
 import logging
 import os
 
-from canopto.core.config import get_download_dir
-from canopto.core.web import download_file
+from core.config import get_download_dir
+from core.web import download_file
 
 
 class File:

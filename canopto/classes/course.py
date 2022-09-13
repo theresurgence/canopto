@@ -2,14 +2,12 @@ import asyncio
 import logging
 import os
 
-import aiofiles
 from bs4 import BeautifulSoup
 
-from canopto.classes.folder import Folder
-from canopto.core.config import get_download_dir
-from canopto.core.web import ep_folders_in_course, get_json
-from canopto.core.web import get_ext_tools_panopto_url, get_request, post_request, create_folder_request_payload, \
-    download_file
+from classes.folder import Folder
+from core.config import get_download_dir
+from core.web import ep_folders_in_course, get_json
+from core.web import get_ext_tools_panopto_url, get_request, post_request, create_folder_request_payload
 
 PANOPTO_LTI_URL = 'https://mediaweb.ap.panopto.com/Panopto/LTI/LTI.aspx'
 FOLDER_INFO_URL = 'https://mediaweb.ap.panopto.com/Panopto/Services/Data.svc/GetFolderInfo'
@@ -84,7 +82,7 @@ class Course:
 
         prev_url = str(r.history[-1].url)
         folder_id = self.get_folderid_from_url(prev_url)
-        videos_download_dir = os.path.join(get_download_dir(), self.code, 'Videos')
+        videos_download_dir = os.path.join(get_download_dir(), self.code, 'Videos_Panopto')
 
         await self.get_video_dict(videos_download_dir, folder_id)
 
@@ -100,14 +98,3 @@ class Course:
 
         for folder_path, folder_id in subfolders.items():
             await self.get_video_dict(folder_path, folder_id)
-
-    async def download_videos(self):
-        await self.create_video_dirs()
-        await asyncio.gather(*[download_file(video_url, video_path)
-                               for video_path, video_url
-                               in self.videos.items()])
-
-    async def create_video_dirs(self) -> None:
-        for video_path in self.videos:
-            await aiofiles.os.makedirs(
-                os.path.dirname(video_path), exist_ok=True)

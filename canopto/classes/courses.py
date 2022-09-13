@@ -1,8 +1,12 @@
 import asyncio
+import logging
+import os
 
-from canopto.classes.course import Course
-from canopto.core.web import ep_courses, get_json
-from canopto.ui.messages import print_list_courses
+import aiofiles
+
+from classes.course import Course
+from core.web import ep_courses, get_json, download_file
+from ui.messages import print_list_courses
 
 
 class Courses:
@@ -10,6 +14,7 @@ class Courses:
     def __init__(self, role: str):
         self.role = role
         self.courses = []
+        self.all_videos = {}
 
     def list_courses(self):
         print_list_courses()
@@ -28,5 +33,20 @@ class Courses:
 
         await asyncio.gather(*[course.refresh() for course in self.courses])
 
+    async def refresh_videos_list(self):
+        for course in self.courses:
+            await course.get_videos()
+            self.all_videos.update(course.videos)
+
+        for i in self.all_videos:
+            logging.info(f'{i}')
+
     async def download_videos(self):
-        await asyncio.gather(*[course.download_videos() for course in self.courses])
+        await self.create_video_dirs()
+        await asyncio.gather(*[download_file(video_url, video_path)
+                               for video_path, video_url
+                               in self.all_videos.items()])
+
+    async def create_video_dirs(self) -> None:
+        for video_path in self.all_videos:
+            await aiofiles.os.makedirs(os.path.dirname(video_path), exist_ok=True)
