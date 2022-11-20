@@ -2,3 +2,4 @@ __pycache__
 venv/
 .idea/
 .canopto_config.txt
+canopto/logfile.txt

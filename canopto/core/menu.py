@@ -53,17 +53,21 @@ async def select_menu(courses):
 
     while True:
         option = await select_option_prompt(courses)
+
         logging.info(f"Option selected: {option}")
         # clear_screen()
 
         try:
             if option == MenuOption.DL_ALL:
+                await courses.refresh_contents()
                 await download_files_and_videos(courses)
 
             elif option == MenuOption.DL_FILES:
+                await courses.refresh_contents()
                 await download_files(courses)
 
             elif option == MenuOption.DL_VIDEOS:
+                await courses.refresh_contents()
                 await download_videos(courses)
 
             elif option == MenuOption.SEL_FOLDER:

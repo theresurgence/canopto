@@ -17,7 +17,7 @@ async def main():
 
     if is_authenticated:
         courses = Courses('student')
-        await courses.refresh()
+        await courses.refresh_list()
 
         await select_menu(courses)
 

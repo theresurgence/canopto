@@ -14,6 +14,7 @@ class Folder:
     def __init__(self, m_id: int, path: str, course_code: str):
         self.id = m_id
         self.path = path.replace('course files', course_code)  # replace default folder name given by canvas
+        self.authorized = True
         self.files = []
 
     async def download_files(self) -> None:
@@ -24,10 +25,18 @@ class Folder:
 
     async def refresh(self) -> None:
         files_json = await get_json(ep_files_in_folder(self.id))
-        self.files = [
-            File(f["id"], f["filename"],
-                 f["size"], f["url"], self.path)
-            for f in files_json]
+
+        try:
+            if files_json.get('status') == 'unauthorized':
+                self.authorized = False
+                logging.info(f'UNAUTHORIZED Folder{self.id}')
+        except:  # TODO empty except
+            pass
+
+        if self.authorized:
+            self.files = [
+                File(f["id"], f["display_name"], f["size"], self.path)
+                for f in files_json]
 
     def abs_path(self) -> str:
         return os.path.join(get_download_dir(), self.path)

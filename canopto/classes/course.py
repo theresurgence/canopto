@@ -16,27 +16,29 @@ FOLDER_SESSION_URL = 'https://mediaweb.ap.panopto.com/Panopto/Services/Data.svc/
 
 class Course:
 
-    def __init__(self, m_id: int, name: str, code: str):
+    def __init__(self, m_id: int, name: str, code: str, role):
         self.id = m_id
         self.name = name.replace('/', '-')
         self.code = code
+        self.role = role
         self.folders = []
         self.videos = {}
 
     def __repr__(self):
-        return f'{self.name}'
+        return f'{self.name}  {self.role}'
 
     async def download_files(self) -> None:
         await self.create_dirs()
-        await asyncio.gather(*[folder.download_files() for folder in self.folders])
+        await asyncio.gather(*[folder.download_files() for folder in self.folders if folder.authorized])
 
-    async def refresh(self) -> None:
+    async def refresh_contents(self) -> None:
         folders_json = await get_json(ep_folders_in_course(self.id))
+
         self.folders = [Folder(f["id"], f["full_name"], self.code)
                         for f in folders_json]
 
         for i in self.folders:
-            logging.info(i.path)
+            logging.info(f'Folder ID {i.id}. Path: {i.path}')
 
         await asyncio.gather(*[folder.refresh() for folder in self.folders])
 

@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import os
 
 import aiofiles
@@ -15,6 +14,7 @@ class Courses:
         self.role = role
         self.courses = []
         self.all_videos = {}
+        self.has_refreshed = False
 
     def list_courses(self):
         print_list_courses()
@@ -25,24 +25,27 @@ class Courses:
     async def download_files(self) -> None:
         await asyncio.gather(*[course.download_files() for course in self.courses])
 
-    async def refresh(self) -> None:
+    async def refresh_list(self) -> None:
         courses_json = await get_json(ep_courses())
 
-        self.courses = [Course(c["id"], c["name"], c["course_code"])
+        # TODO reinstate remove if statement
+        self.courses = [Course(c["id"], c["name"], c["course_code"], c["enrollments"][0]['type'])
                         for c in courses_json]
 
-        await asyncio.gather(*[course.refresh() for course in self.courses])
+    async def refresh_contents(self) -> None:
+        if not self.has_refreshed:
+            await asyncio.gather(*[course.refresh_contents() for course in self.courses])
+
+        self.has_refreshed = True
 
     async def refresh_videos_list(self):
         for course in self.courses:
             await course.get_videos()
             self.all_videos.update(course.videos)
 
-        for i in self.all_videos:
-            logging.info(f'{i}')
-
     async def download_videos(self):
         await self.create_video_dirs()
+
         await asyncio.gather(*[download_file(video_url, video_path)
                                for video_path, video_url
                                in self.all_videos.items()])

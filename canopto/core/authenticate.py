@@ -92,7 +92,10 @@ async def authentication_loop():
             username, password = await get_credentials_prompt()
 
         try:
+            # Cookies for debugging
+            # load_cookies('cookies.txt')
             await authenticate(username, password)
+            # save_cookies('cookies.txt')
 
         except httpx.RequestError as exc:
             print_request_error()
