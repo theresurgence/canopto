@@ -49,13 +49,13 @@ def clear_screen():
 
 
 async def select_menu(courses):
-    # clear_screen()
+    clear_screen()
 
     while True:
         option = await select_option_prompt(courses)
 
         logging.info(f"Option selected: {option}")
-        # clear_screen()
+        clear_screen()
 
         try:
             if option == MenuOption.DL_ALL:
