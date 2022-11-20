@@ -1,3 +1,5 @@
+import copy
+import pickle
 from pathlib import Path
 
 import aiofiles
@@ -19,10 +21,10 @@ BROWSER_HEADER = {
     'TE': 'trailers'
 }
 
-LIMITS = httpx.Limits(max_keepalive_connections=10, max_connections=10)
+LIMITS = httpx.Limits(max_keepalive_connections=None, max_connections=None)
 ACLIENT = httpx.AsyncClient(http1=False, http2=True,
                             limits=LIMITS,
-                            headers=BROWSER_HEADER, timeout=3)
+                            headers=BROWSER_HEADER, timeout=10)
 
 
 async def close_aclient():
@@ -31,7 +33,7 @@ async def close_aclient():
 
 async def get_request(url, follow_redirects=False):
     res = await ACLIENT.get(url, follow_redirects=follow_redirects)
-    if res.status_code >= 400:
+    if res.status_code >= 400 and res.status_code != 403:
         res.raise_for_status()
     return res
 
@@ -45,7 +47,7 @@ async def post_request(url, data=None, json=None, follow_redirects=False):
 
 
 async def get_json(api_endpoint: str):
-    url = API_BASE_URL + api_endpoint
+    url = API_BASE_URL + api_endpoint + '?per_page=100'
     response = await get_request(url)
     return response.json()
 
@@ -73,9 +75,9 @@ Files stored locally without .part are ignored.
     file_path_part = Path(f'{path}.part')
 
     if file_path_part.exists():
-        file_size = file_path_part.stat().st_size
-        headers = BROWSER_HEADER
-        headers.update({'range': f'bytes={file_size}-'})
+        file_part_size = file_path_part.stat().st_size
+        headers = copy.deepcopy(BROWSER_HEADER)
+        headers.update({'Range': f'bytes={file_part_size}-'})
         await stream_download(headers, url, file_path, file_path_part)
         await aiofiles.os.rename(file_path_part, file_path)
 
@@ -83,6 +85,10 @@ Files stored locally without .part are ignored.
         if not file_path.exists():
             await stream_download(BROWSER_HEADER, url, file_path, file_path_part)
             await aiofiles.os.rename(file_path_part, file_path)
+
+
+def url_download_file(file_id) -> str:
+    return f'https://canvas.nus.edu.sg/files/{file_id}/download?download_frd=1'
 
 
 def ep_personal_folders() -> str:
@@ -127,3 +133,16 @@ def create_folder_request_payload(folderId):
             # "startDate": None
         }
     }
+
+
+def save_cookies(cookies_file):
+    with open(cookies_file, "wb") as f:
+        pickle.dump(ACLIENT.cookies.jar._cookies, f)
+
+
+def load_cookies(cookies_file):
+    with open(cookies_file, "rb") as f:
+        loadedCookies = pickle.load(f)
+
+    ACLIENT.cookies.jar._cookies.update(loadedCookies)
+    ACLIENT.cookies.jar.clear_expired_cookies()
