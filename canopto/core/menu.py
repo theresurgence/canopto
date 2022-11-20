@@ -6,6 +6,7 @@ import time
 import httpx
 
 from classes.menuoption import MenuOption
+from core.authenticate import logout_credentials_from_keyring
 from core.config import select_download_dir_dialog
 from ui.messages import print_download_time, print_request_error, print_faq
 from ui.tui import select_option_prompt
@@ -48,12 +49,12 @@ def clear_screen():
 
 
 async def select_menu(courses):
-    clear_screen()
+    # clear_screen()
 
     while True:
         option = await select_option_prompt(courses)
         logging.info(f"Option selected: {option}")
-        clear_screen()
+        # clear_screen()
 
         try:
             if option == MenuOption.DL_ALL:
@@ -70,6 +71,11 @@ async def select_menu(courses):
 
             elif option == MenuOption.FAQ:
                 show_faq()
+
+            elif option == MenuOption.LOGOUT:
+                username = logout_credentials_from_keyring()
+                print(f"{username} has been logged out!")
+                break
 
             elif option == MenuOption.QUIT:
                 break

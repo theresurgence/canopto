@@ -81,6 +81,11 @@ def exit_with_value(event):
 
 @bindings.add(str(6))
 def exit_with_value(event):
+    event.app.exit(result=MenuOption.LOGOUT)
+
+
+@bindings.add(str(7))
+def exit_with_value(event):
     event.app.exit(result=MenuOption.QUIT)
 
 
@@ -97,7 +102,12 @@ def exit_with_value(event):
     event.app.exit(result=MenuOption.FAQ)
 
 
-@half_bindings.add(str(6))
+@bindings.add(str(6))
+def exit_with_value(event):
+    event.app.exit(result=MenuOption.LOGOUT)
+
+
+@half_bindings.add(str(7))
 def exit_with_value(event):
     event.app.exit(result=MenuOption.QUIT)
 
@@ -122,7 +132,8 @@ async def select_option_prompt(courses):
 
         print_formatted_text(HTML("<aaa >4. Choose download folder</aaa>"))
         print_formatted_text(HTML("<aaa >5. FAQ</aaa>"))
-        print_formatted_text(HTML("<aaa >6. Quit</aaa>\n"))
+        print_formatted_text(HTML("<aaa >6. Logout</aaa>"))
+        print_formatted_text(HTML("<aaa >7. Quit</aaa>\n"))
         print_formatted_text(HTML("<aaa fg='yellow' >Ctrl-C to exit anytime</aaa>"))
         result = await session.prompt_async(editing_mode=False)
         return result

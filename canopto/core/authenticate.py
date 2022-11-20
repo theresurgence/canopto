@@ -31,6 +31,15 @@ def save_credentials_to_keyring(username: str, password: str):
     keyring.set_password("canopto", username, password)
 
 
+def logout_credentials_from_keyring():
+    username = keyring.get_password("canopto", "username")
+    if username:
+        keyring.delete_password("canopto", username)
+    keyring.delete_password("canopto", "username")
+
+    return username
+
+
 async def authenticate(username, password) -> None:
     """
     Retrieve authentication cookies from Canvas server.
