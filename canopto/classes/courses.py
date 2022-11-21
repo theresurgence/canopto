@@ -14,7 +14,8 @@ class Courses:
         self.role = role
         self.courses = []
         self.all_videos = {}
-        self.has_refreshed = False
+        self.has_refreshed_files = False
+        self.has_refreshed_videos = False
 
     def list_courses(self):
         print_list_courses()
@@ -33,15 +34,18 @@ class Courses:
                         for c in courses_json]
 
     async def refresh_contents(self) -> None:
-        if not self.has_refreshed:
+        if not self.has_refreshed_files:
             await asyncio.gather(*[course.refresh_contents() for course in self.courses])
 
-        self.has_refreshed = True
+        self.has_refreshed_files = True
 
     async def refresh_videos_list(self):
-        for course in self.courses:
-            await course.get_videos()
-            self.all_videos.update(course.videos)
+        if not self.has_refreshed_videos:
+            for course in self.courses:
+                await course.get_videos()
+                self.all_videos.update(course.videos)
+               
+        self.has_refreshed_videos = True
 
     async def download_videos(self):
         await self.create_video_dirs()
