@@ -5,11 +5,11 @@ import time
 
 import httpx
 
-from classes.menuoption import MenuOption
-from core.authenticate import logout_credentials_from_keyring
-from core.config import select_download_dir_dialog
-from ui.messages import print_download_time, print_request_error, print_faq
-from ui.tui import select_option_prompt
+from canopto.classes.menuoption import MenuOption
+from canopto.core.authenticate import logout_credentials_from_keyring
+from canopto.core.config import select_download_dir_dialog
+from canopto.ui.messages import print_download_time, print_request_error, print_faq
+from canopto.ui.tui import select_option_prompt
 
 
 async def download_files(courses):

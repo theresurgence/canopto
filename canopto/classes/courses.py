@@ -3,9 +3,9 @@ import os
 
 import aiofiles
 
-from classes.course import Course
-from core.web import ep_courses, get_json, download_file
-from ui.messages import print_list_courses
+from canopto.classes.course import Course
+from canopto.core.web import ep_courses, get_json, download_file
+from canopto.ui.messages import print_list_courses
 
 
 class Courses:
@@ -44,7 +44,7 @@ class Courses:
             for course in self.courses:
                 await course.get_videos()
                 self.all_videos.update(course.videos)
-               
+
         self.has_refreshed_videos = True
 
     async def download_videos(self):
