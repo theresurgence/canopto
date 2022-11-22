@@ -5,7 +5,7 @@ from canopto.classes.courses import Courses
 from canopto.core.authenticate import authentication_loop
 from canopto.core.config import parse_config_file
 from canopto.core.menu import select_menu
-from canopto.core.web import close_aclient
+from core.web import close_aclient
 
 
 # logging.basicConfig(filename='logfile.txt', level=logging.INFO)
