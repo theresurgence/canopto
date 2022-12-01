@@ -1,7 +1,7 @@
 import os
 
-from core.config import get_download_dir
-from core.web import download_file, url_download_file
+from canopto.core.config import get_download_dir
+from canopto.core.web import download_file, url_download_file
 
 
 class File:
