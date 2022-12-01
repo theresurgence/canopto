@@ -24,7 +24,7 @@ BROWSER_HEADER = {
 LIMITS = httpx.Limits(max_keepalive_connections=None, max_connections=10)
 ACLIENT = httpx.AsyncClient(http1=False, http2=True,
                             limits=LIMITS,
-                            headers=BROWSER_HEADER, timeout=10)
+                            headers=BROWSER_HEADER, timeout=3)
 
 
 async def close_aclient():

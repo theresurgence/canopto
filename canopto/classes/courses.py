@@ -24,12 +24,13 @@ class Courses:
         print()
 
     async def download_files(self) -> None:
+        # for course in self.courses:
+        # await course.download_files()
         await asyncio.gather(*[course.download_files() for course in self.courses])
 
     async def refresh_list(self) -> None:
         courses_json = await get_json(ep_courses())
 
-        # TODO reinstate remove if statement
         self.courses = [Course(c["id"], c["name"], c["course_code"], c["enrollments"][0]['type'])
                         for c in courses_json]
 
@@ -44,15 +45,17 @@ class Courses:
             for course in self.courses:
                 await course.get_videos()
                 self.all_videos.update(course.videos)
-               
+
         self.has_refreshed_videos = True
 
     async def download_videos(self):
         await self.create_video_dirs()
 
-        await asyncio.gather(*[download_file(video_url, video_path)
-                               for video_path, video_url
-                               in self.all_videos.items()])
+        for video_path, video_url in self.all_videos.items():
+            await download_file(video_url, video_path)
+        # await asyncio.gather(*[download_file(video_url, video_path)
+        #                        for video_path, video_url
+        #                        in self.all_videos.items()])
 
     async def create_video_dirs(self) -> None:
         for video_path in self.all_videos:
