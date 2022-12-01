@@ -2,7 +2,7 @@ from prompt_toolkit import print_formatted_text, HTML
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.styles import Style
 
-from core.config import get_download_dir, is_download_dir_valid
+from canopto.core.config import get_download_dir, is_download_dir_valid
 
 STYLE = Style.from_dict({
     'error': 'fg:#ff0066',

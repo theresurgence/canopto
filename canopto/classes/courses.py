@@ -3,9 +3,9 @@ import os
 
 import aiofiles
 
-from classes.course import Course
-from core.web import ep_courses, get_json, download_file
-from ui.messages import print_list_courses
+from canopto.classes.course import Course
+from canopto.core.web import ep_courses, get_json, download_file
+from canopto.ui.messages import print_list_courses
 
 
 class Courses:
